@@ -1,11 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true, unique: true })
@@ -14,11 +14,21 @@ export class User {
   @Prop({ required: true })
   birthday: Date;
 
-  @Prop()
+  @Prop({ required: true })
   address: string;
 
-  @Prop()
+  @Prop({ required: true })
   phone: string;
+
+  @Prop(
+    raw([
+      {
+        shot: { type: String },
+        value: { type: Boolean },
+      },
+    ]),
+  )
+  vaccination?: [];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
