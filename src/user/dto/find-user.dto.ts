@@ -1,4 +1,4 @@
-export class FindUserDto {
-  cin: string;
-  birthday: Date;
-}
+import { PickType } from '@nestjs/mapped-types';
+import { UserDto } from './user-dto';
+
+export class FindUserDto extends PickType(UserDto, ['cin', 'birthday']) {}
