@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { loginAdminDto } from './dto/admin-dto';
 
@@ -18,6 +18,14 @@ export class AdminController {
   async createManager(@Body() createManager: loginAdminDto) {
     try {
       return await this.adminService.createManager(createManager);
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+  @Get('stats')
+  async stats() {
+    try {
+      return await this.adminService.stats();
     } catch (error) {
       return { error: error.message };
     }
