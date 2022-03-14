@@ -1,6 +1,7 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 import { Document } from 'mongoose';
-
+import { Vaccin } from 'src/vaccin/vaccin.schema';
 export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
@@ -20,15 +21,8 @@ export class User {
   @Prop({ required: true })
   phone: string;
 
-  @Prop(
-    raw([
-      {
-        shot: { type: String },
-        value: { type: Boolean },
-      },
-    ]),
-  )
-  vaccination?: [];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vaccin' }] })
+  shots: Vaccin[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

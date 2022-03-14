@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { UserShotsDto } from './dto/userShots-dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -14,6 +15,19 @@ export class UserController {
 
   @Post('create')
   async create(@Body() createUserDto: CreateUserDto) {
-    return createUserDto;
+    try {
+      return await this.userService.createUser(createUserDto);
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+
+  @Post('updateshots')
+  async updateshots(@Body() updateShots: UserShotsDto) {
+    try {
+      return await this.userService.updateshots(updateShots);
+    } catch (error) {
+      return { error: error.message };
+    }
   }
 }
