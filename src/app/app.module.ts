@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AdminModule } from 'src/admin/admin.module';
+import { AuthModule } from 'src/auth/auth.module';
 import { CenterModule } from 'src/center/center.module';
 import { UserModule } from 'src/user/user.module';
 import { VaccinModule } from 'src/vaccin/vaccin.module';

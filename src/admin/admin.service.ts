@@ -4,6 +4,7 @@ import { Admin, AdminDocument } from './admin.schema';
 import { Model } from 'mongoose';
 import { loginAdminDto } from './dto/admin-dto';
 import { User, UserDocument } from 'src/user/user.schema';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class AdminService {
@@ -12,18 +13,21 @@ export class AdminService {
     private readonly adminModel: Model<AdminDocument>,
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    private authService: AuthService,
   ) {}
 
-  async login(login: loginAdminDto): Promise<Admin | object> {
+  async login(login: loginAdminDto): Promise<Admin | object | string> {
     const errors = {
       email: 'email doesnt exist',
       password: 'password incorrect',
     };
+
     const { email, password } = login;
     const admin = await this.adminModel.findOne({ email });
     if (!admin) return { error: errors.email };
     if (admin.password !== password) return { error: errors.password };
-    return admin;
+    const token = await this.authService.singToken({ admin }, 'ADMIN');
+    return { token, admin };
   }
 
   async createManager(createManager: loginAdminDto): Promise<Admin | object> {
