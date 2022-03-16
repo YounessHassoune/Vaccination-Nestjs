@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { Payload } from 'src/decorators/payload.decorator';
 import { Role } from 'src/decorators/role.decorator';
 import { AdminService } from './admin.service';
 import { loginAdminDto } from './dto/admin-dto';
@@ -29,10 +29,8 @@ export class AdminController {
   @Role('ADMIN')
   @UseGuards(JwtGuard)
   @Get('stats')
-  async stats(@Req() req: Request) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    console.log(req.payload);
+  async stats(@Payload() payload: unknown) {
+    console.log(payload);
 
     try {
       return await this.adminService.stats();
